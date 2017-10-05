@@ -13,17 +13,25 @@ build-type:          Simple
 extra-source-files:  README.md
 cabal-version:       >=1.10
 
-test-suite haskell-demonstrations-test
-  type:                exitcode-stdio-1.0
+library
   hs-source-dirs:      src
-  main-is:             Main.hs
-  other-modules:     TypeclassMock
+  exposed-modules:     TypeclassMock
                      , Missiles
-  build-depends:       base
+  build-depends:       base >= 4.7 && < 5
+                     , transformers
                      , tasty
                      , tasty-hunit
                      , tasty-quickcheck
-                     , transformers
+
+  default-language:    Haskell2010
+
+test-suite haskell-demonstrations-test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Main.hs
+  build-depends:       base
+                     , haskell-demonstrations
+                     , tasty
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   default-language:    Haskell2010
 
