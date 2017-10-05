@@ -8,14 +8,15 @@ import Test.Tasty.HUnit (testCase, (@?=))
 import Control.Monad.Trans.Writer (Writer, tell)
 import Missiles (Missiles, launch)
 
-type WriterMock = Writer [String]
+type WriterMock e = Writer [e]
+type WriteStringMock = WriterMock String
 
 demos = testGroup "Typeclass Mock" [
         testCase "Simple Writer" $
-            (backdoor :: WriterMock ()) @?= tell ["launched"]
+            (backdoor :: WriteStringMock ()) @?= tell ["launched"]
     ]
 
-instance Missiles WriterMock where
+instance Missiles WriteStringMock where
     launch = tell ["launched"]
 
 backdoor = launch
