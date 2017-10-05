@@ -9,3 +9,7 @@ decide to mock your collaborating typeclasses. This simple demo shows
 a couple of ways to do it and hints at how to build up more complex
 scenarios.
 
+## FreeMock.hs
+
+The Free type can be used to defer interpretation when you need to
+mock or stub functions that are already wired to IO.
