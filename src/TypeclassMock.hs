@@ -10,25 +10,21 @@ import Control.Monad.Trans.State
 
 import Missiles (Missiles, launch)
 
-type WriterMock e = Writer [e]
-type WriteStringMock = WriterMock String
-
-type StateMock s = State s
-type StateBoolMock = StateMock Bool
-
-
 demos = testGroup "Typeclass Mock" [
-        testCase "Simple Writer" $
+        testCase "Writer" $
             execWriter backdoor @?= ["launched"]
-       , testCase "Simple State" $
+       , testCase "State" $
             execState backdoor False  @?= True
     ]
 
-instance Missiles WriteStringMock where
+-- a logging mock
+instance Missiles (Writer [String]) where
     launch = tell ["launched"]
 
-instance Missiles StateBoolMock where
+-- a transformation mock
+instance Missiles (State Bool) where
     launch = put True
 
+-- The function under test
 backdoor :: Missiles m => m ()
 backdoor = launch
