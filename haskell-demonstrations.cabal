@@ -16,7 +16,9 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     Lib
+                     , Missiles
   build-depends:       base >= 4.7 && < 5
+                     , transformers
   default-language:    Haskell2010
 
 executable haskell-demonstrations-exe
@@ -25,6 +27,7 @@ executable haskell-demonstrations-exe
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
                      , haskell-demonstrations
+                     , transformers
   default-language:    Haskell2010
 
 test-suite haskell-demonstrations-test
@@ -36,7 +39,8 @@ test-suite haskell-demonstrations-test
                      , tasty
                      , tasty-hunit
                      , tasty-quickcheck
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+                     , transformers
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N -main-is Spec.testMain
   default-language:    Haskell2010
 
 source-repository head

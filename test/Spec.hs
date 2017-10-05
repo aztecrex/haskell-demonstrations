@@ -1,8 +1,13 @@
-module Main where
 
-import Test.Tasty
+module Spec where
 
-main :: IO ()
-main = defaultMain tests
+import Test.Tasty (defaultMain, testGroup)
 
-tests = testGroup "All" []
+import qualified TypeclassMock
+
+testMain :: IO ()
+testMain = defaultMain tests
+
+tests = testGroup "All" [
+        TypeclassMock.demos
+    ]
