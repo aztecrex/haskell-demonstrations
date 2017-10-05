@@ -1,12 +1,12 @@
 
-module Spec where
+module Main where
 
 import Test.Tasty (defaultMain, testGroup)
 
 import qualified TypeclassMock
 
-testMain :: IO ()
-testMain = defaultMain tests
+main :: IO ()
+main = defaultMain tests
 
 tests = testGroup "All" [
         TypeclassMock.demos
