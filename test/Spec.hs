@@ -1,2 +1,8 @@
+module Main where
+
+import Test.Tasty
+
 main :: IO ()
-main = putStrLn "Test suite not yet implemented"
+main = defaultMain tests
+
+tests = testGroup "All" []
