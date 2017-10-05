@@ -18,8 +18,10 @@ library
   exposed-modules:     TypeclassMock
                      , FreeMock
                      , Missiles
+                     , Robot
   build-depends:       base >= 4.7 && < 5
                      , transformers
+                     , free
                      , tasty
                      , tasty-hunit
                      , tasty-quickcheck
