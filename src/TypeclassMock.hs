@@ -2,7 +2,7 @@
 
 module TypeclassMock (demos) where
 
-import Test.Tasty (testGroup)
+import Test.Tasty (testGroup, TestTree)
 import Test.Tasty.HUnit (testCase, (@?=))
 
 import Control.Monad.Trans.Writer (execWriter, Writer, tell)
@@ -11,6 +11,7 @@ import Control.Monad.Trans.Class
 
 import Missiles (Missiles, launch)
 
+demos :: TestTree
 demos = testGroup "Typeclass Mock" [
         testCase "Backdoor with writer" $
             execWriter backdoor @?= ["launched"]
@@ -43,11 +44,9 @@ class Monad m => Panel m where
 
 -- panel implementation under test
 type PanelState = String
-
 instance Missiles m => Panel (StateT PanelState m) where
     enter = put
     fire = do
         code <- get
         lift $ launch code
-
 
