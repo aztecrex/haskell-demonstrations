@@ -52,5 +52,9 @@ throttle' v = liftF $ Throttle v ()
 status' :: SubSystem -> Op Bool
 status' sys = liftF $ Status sys id
 
-
-
+-- how we connect to the real functions in IO
+runReal :: Op r -> IO r
+runReal (Pure r) = return r
+runReal (Free (Fire op)) = fire >> runReal op
+runReal (Free (Throttle val op)) = throttle val >> runReal op
+runReal (Free (Status sys fop)) = status sys >>= runReal . fop
