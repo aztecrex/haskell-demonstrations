@@ -11,20 +11,23 @@ import Control.Monad.Trans.State
 import Missiles (Missiles, launch)
 
 demos = testGroup "Typeclass Mock" [
-        testCase "Writer" $
+        testCase "Backdoor with writer" $
             execWriter backdoor @?= ["launched"]
-       , testCase "State" $
+      , testCase "Backdoor with state" $
             execState backdoor False  @?= True
     ]
 
 -- a logging mock
 instance Missiles (Writer [String]) where
-    launch = tell ["launched"]
+    launch "pa$$word123" = tell ["launched"]
+    launch _ = pure ()
 
 -- a transformation mock
 instance Missiles (State Bool) where
-    launch = put True
+    launch "pa$$word123" = put True
+    launch _ = pure ()
 
 -- The function under test
 backdoor :: Missiles m => m ()
-backdoor = launch
+backdoor = launch "pa$$word123"
+
