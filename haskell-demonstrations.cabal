@@ -17,6 +17,7 @@ library
   hs-source-dirs:      src
   exposed-modules:     TypeclassMock
                      , FreeMock
+                     , BigStack
                      , Missiles
                      , Robot
   build-depends:       base >= 4.7 && < 5
