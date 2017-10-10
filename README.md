@@ -13,3 +13,8 @@ scenarios.
 
 The Free type can be used to defer interpretation when you need to
 mock or stub functions that are already wired to IO.
+
+## BigStack.hs
+
+You can bolt together a bunch of transformers and operate them independently.
+Here's how.
