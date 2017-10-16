@@ -6,6 +6,7 @@ import Test.Tasty (defaultMain, testGroup, TestTree)
 import qualified TypeclassMock
 import qualified FreeMock
 import qualified BigStack
+import qualified Transformer
 
 main :: IO ()
 main = defaultMain tests
@@ -14,5 +15,6 @@ tests :: TestTree
 tests = testGroup "All" [
         TypeclassMock.demos,
         FreeMock.demos,
-        BigStack.demos
+        BigStack.demos,
+        Transformer.demos
     ]

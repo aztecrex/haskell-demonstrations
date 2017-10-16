@@ -9,8 +9,12 @@ import Data.Functor.Identity
 
 demos :: TestTree
 demos = testGroup "Big Stack" [
-    testCase "thread the execs" $
-        execStack (initStack ("a","b","c")) @?= ("a", "b", "c"),
+    testCase "thread the execs" $ do
+        let values = ("a", "b", "c")
+        execStack (initStack values) @?= values,
+    testCase "composedExec" $ do
+        let values = ("a", "b", "c")
+        execStack' (initStack values) @?= execStack (initStack values),
     testCase "init, rotate, get, eval" $
         evalStack (initStack ("a","b","c") >> rotateStack >> getStack)
           @?= ("b", "c", "a")
@@ -24,6 +28,9 @@ execStack stack = (a, b, c)
             b = runIdentity $ evalStateT (execStateT (runStateT stack def) def) def
             c = runIdentity $ execStateT (runStateT (runStateT stack def) def) def
             def = ""
+
+execStack' :: BigStack a -> (String, String, String)
+execStack' s = evalStack $ s >> getStack
 
 getStack :: BigStack (String, String, String)
 getStack = do
