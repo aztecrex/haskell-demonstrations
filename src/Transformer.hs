@@ -88,11 +88,6 @@ type ParseArgs e o = [String] -> Either e o
 class (Monad m) => HasArgs m where
     getArgs' :: m [String]
 
--- For the demo, a reader just gives up its args. This is
--- how ParametersT can be tested
-instance HasArgs (Reader [String]) where
-    getArgs' = ask
-
 -- Here's how you can use IO or somedemo that can liftIO. Don't
 -- do an undecidable instance on liftIO or it will match too many
 -- demos (e.g. the Reader [String] instance for the demo) and you
@@ -115,6 +110,11 @@ parameters' eitherOptions stuff = do
 parse' :: [String] -> Either String Int
 parse' ["nonsense"] = Left "bad arguments"
 parse' args = Right $ length args
+
+-- For the demo, a reader just gives up its args. This is
+-- how ParametersT can be tested
+instance HasArgs (Reader [String]) where
+    getArgs' = ask
 
 -- Demonstrate ParametersT when stack HasArgs
 demo :: Reader [String] String
