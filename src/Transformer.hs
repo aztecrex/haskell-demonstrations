@@ -5,25 +5,25 @@ module Transformer (demos) where
 
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.HUnit (testCase, (@?=))
-import Data.Default
-import Control.Monad.Trans.Reader
-import Control.Monad.Trans.Maybe
-import Data.Functor.Identity
-import Control.Monad.Trans.Class
-import Control.Monad.IO.Class
-import Control.Applicative
+
+import Control.Monad.Trans.Reader (Reader, runReader, ask)
+import Data.Functor.Identity (Identity, runIdentity)
+import Control.Monad.Trans.Class (MonadTrans, lift)
+import Control.Monad.IO.Class (MonadIO, liftIO)
+import Control.Applicative (Applicative, liftA2)
+
 import System.Environment
 
 demos :: TestTree
 demos = testGroup "Transformer" [
     testCase "success" $
-        runReader thing ["one", "two", "three"] @?= "result: 9",
+        runReader demo ["one", "two", "three"] @?= "result: 9",
     testCase "failure" $
-        runReader thing ["nonsense"] @?= "error: bad arguments",
-    testCase "success without a parser" $
-        runIdentity (thing2 (Right 4)) @?= "result: 16",
-    testCase "success without a parser" $
-        runIdentity (thing2 (Left "whoops!")) @?= "error: whoops!"
+        runReader demo ["nonsense"] @?= "error: bad arguments",
+    testCase "success pre-parsed" $
+        runIdentity (demo2 (Right 4)) @?= "result: 16",
+    testCase "success pre-parsed" $
+        runIdentity (demo2 (Left "whoops!")) @?= "error: whoops!"
   ]
 
 -- The type for the parameters Monad. Its type parameters
@@ -93,9 +93,9 @@ class (Monad m) => HasArgs m where
 instance HasArgs (Reader [String]) where
     getArgs' = ask
 
--- Here's how you can use IO or something that can liftIO. Don't
+-- Here's how you can use IO or somedemo that can liftIO. Don't
 -- do an undecidable instance on liftIO or it will match too many
--- things (e.g. the Reader [String] instance for the demo) and you
+-- demos (e.g. the Reader [String] instance for the demo) and you
 -- won't be able to test it outside of IO
 instance HasArgs IO where
     getArgs' = getArgs
@@ -106,24 +106,28 @@ parameters fp stuff = do
     args <- getArgs'
     runParametersT stuff (fp args)
 
+-- Using parameters with pre-parssed options
 parameters' :: Either e o -> ParametersT e o m a -> m (Either e a)
 parameters' eitherOptions stuff = do
     runParametersT stuff eitherOptions
 
+-- Example parser, counts the arguments but has one unparsable case
 parse' :: [String] -> Either String Int
 parse' ["nonsense"] = Left "bad arguments"
 parse' args = Right $ length args
 
-thing :: Reader [String] String
-thing = do
+-- Demonstrate ParametersT when stack HasArgs
+demo :: Reader [String] String
+demo = do
     result <- parameters parse' $ do
         opts <- options
         let result = opts * opts
         pure result
     pure $ either (("error: " ++) <$> id) (("result: " ++) <$> show) result
 
-thing2 :: Either String Int -> Identity String
-thing2 eo = do
+-- Demonstrate ParameterfsT when stack does not HasArgs
+demo2 :: Either String Int -> Identity String
+demo2 eo = do
     result <- parameters' eo $ do
         opts <- options
         let result = opts * opts
