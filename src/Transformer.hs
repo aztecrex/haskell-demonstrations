@@ -27,7 +27,7 @@ demos = testGroup "Transformer" [
   ]
 
 -- The type for the parameters Monad. Its type parameters
--- are o: tye type of options available to a program
+-- are o: the type of options available to a program
 --     e: an error discovered in obtaining options
 --     m: the embedded monad
 --     a: the encapsulated value
@@ -88,9 +88,9 @@ type ParseArgs e o = [String] -> Either e o
 class (Monad m) => HasArgs m where
     getArgs' :: m [String]
 
--- Here's how you can use IO or somedemo that can liftIO. Don't
+-- Here's how you can use IO or something that can liftIO. Don't
 -- do an undecidable instance on liftIO or it will match too many
--- demos (e.g. the Reader [String] instance for the demo) and you
+-- things (e.g. the Reader [String] instance for the demo) and you
 -- won't be able to test it outside of IO
 instance HasArgs IO where
     getArgs' = getArgs
