@@ -14,11 +14,15 @@ scenarios.
 The Free type can be used to defer interpretation when you need to
 mock or stub functions that are already wired to IO.
 
-## BigStack.hs
-
-You can bolt together a bunch of transformers and operate them independently.
-Here's how.
-
 ## Transformer.hs
 
-Make a monad transformer from scratch.
+You know about the Reader monad and the IO monad but what if you need
+both in your program? Monad transormers are a popular way to compose
+computational contexts. This demo shows how to make a monad transformer
+from scratch.
+
+## BigStack.hs
+
+So you have a bunch of monad transformers in a stack. How do operate on
+each context individually? This demo shows how to address any context
+in your stack using the `lift` function from `MonadTrans`.
