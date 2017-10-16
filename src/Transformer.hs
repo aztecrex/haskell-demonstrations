@@ -21,9 +21,9 @@ demos = testGroup "Transformer" [
     testCase "failure" $
         runReader demo ["nonsense"] @?= "error: bad arguments",
     testCase "success pre-parsed" $
-        runIdentity (demo2 (Right 4)) @?= "result: 16",
+        runIdentity (demo2 ["a", "b", "c", "d"]) @?= "result: 16",
     testCase "success pre-parsed" $
-        runIdentity (demo2 (Left "whoops!")) @?= "error: whoops!"
+        runIdentity (demo2 ["nonsense"]) @?= "error: bad arguments"
   ]
 
 -- The type for the parameters Monad. Its type parameters
@@ -123,9 +123,9 @@ demo = do
     pure $ either (("error: " ++) <$> id) (("result: " ++) <$> show) result
 
 -- Demonstrate ParameterfsT when stack does not HasArgs
-demo2 :: Either String Int -> Identity String
-demo2 eo = do
-    result <- parameters' eo $ do
+demo2 :: [String] -> Identity String
+demo2 args = do
+    result <- parameters' (parse' args) $ do
         opts <- options
         let result = opts * opts
         pure result
