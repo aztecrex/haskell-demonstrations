@@ -97,14 +97,11 @@ instance HasArgs IO where
 
 -- How you use the monad from within another that supplies arguments
 parameters :: (HasArgs m) => ParseArgs e o -> ParametersT e o m a -> m (Either e a)
-parameters fp stuff = do
-    args <- getArgs'
-    runParametersT stuff (fp args)
+parameters fp program = getArgs' >>= runParametersT program . fp
 
 -- Using parameters with pre-parssed options
 parameters' :: Either e o -> ParametersT e o m a -> m (Either e a)
-parameters' eitherOptions stuff = do
-    runParametersT stuff eitherOptions
+parameters' = flip runParametersT
 
 -- Example parser, counts the arguments but has one unparsable case
 parse' :: [String] -> Either String Int
