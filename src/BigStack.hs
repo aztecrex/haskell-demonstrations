@@ -70,19 +70,3 @@ emit = do
   v <- get
   lift $ pure $ length v
 
--- process :: String -> BigStack Int
--- process =
--- runStack :: BigStack a -> String
--- runStack stack = runIdentity $ execStateT stack "whatever"
-
-
--- unpack :: BigStack () -> String
--- unpack = runIdentity $ do
---   s <- get
---   return s
-
-
-  -- f :: String -> String
--- f s = runIdentity $ execState $ do
---   put s
---   get
