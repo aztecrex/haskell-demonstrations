@@ -14,6 +14,10 @@ scenarios.
 The Free type can be used to defer interpretation when you need to
 mock or stub functions that are already wired to IO.
 
+## DependencyInjection.hs
+
+An isolated dependency-injection example.
+
 ## Transformer.hs
 
 You know about the Reader monad and the IO monad but what if you need
