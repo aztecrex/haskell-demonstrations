@@ -19,6 +19,7 @@ library
                      , FreeMock
                      , BigStack
                      , Transformer
+                     , DependencyInjection
                      , Missiles
                      , Robot
   build-depends:       base >= 4.7 && < 5
