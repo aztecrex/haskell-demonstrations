@@ -13,9 +13,9 @@ demos :: TestTree
 demos = testGroup "DependencyInjection" [
         testCase "here be stubs" $
             let size = 17
-                program = barage :: Stub ()                  -- inject with stub and mock
+                program = barage :: StubAndMock ()           -- inject with stub and mock
                 actual = execWriterT program size            -- when injected program is run
-            in actual @?= take size (repeat "launchc0de")    -- then ...
+            in  actual @?= take size (repeat "launchc0de")   -- then ...
     ]
 
 -- code with side-effectful dependencies
@@ -33,15 +33,15 @@ class (Monad m) => Rand m where
 -- a stub implementation of Rand
 -- simply returns whatever number it is given
 instance Rand ((->) Int) where
-    fromRange _ _ = id
+    fromRange = const . flip const
 
 -- a mock implementation of Missiles
 -- keep track of all the launches
 instance (Monad m) => Missiles (WriterT [String] m) where
     launch p = tell [p]
 
--- custom mock + stub for missiles and random number
-type Stub = WriterT [String] ((->) Int)
+-- custom stub + mock for missiles and random number
+type StubAndMock = WriterT [String] ((->) Int)
 
-instance Rand Stub where
+instance Rand StubAndMock where
     fromRange l h = lift $ fromRange l h
