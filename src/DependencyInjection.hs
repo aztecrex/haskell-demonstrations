@@ -33,8 +33,7 @@ class (Monad m) => Rand m where
 -- a stub implementation of Rand
 -- simply returns whatever number it is given
 instance Rand ((->) Int) where
-    fromRange lo hi = (clamp lo hi) . id where
-        clamp lo' hi' x = min hi' (max lo' x)
+    fromRange _ _ = id
 
 -- a mock implementation of Missiles
 -- keep track of all the launches
